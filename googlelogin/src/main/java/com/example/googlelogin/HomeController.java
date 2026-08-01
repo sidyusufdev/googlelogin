@@ -2,21 +2,28 @@ package com.example.googlelogin;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class HomeController {
 
     @GetMapping("/")
-    public String home(@AuthenticationPrincipal OAuth2User principal) {
+    public String home(@AuthenticationPrincipal OAuth2User principal, Model model) {
 
         if (principal == null) {
-            return "User not authenticated!";
+            return "redirect:/oauth2/authorization/google";
         }
 
-        String name = principal.getAttribute("name");
+        model.addAttribute("name", principal.getAttribute("name"));
+        model.addAttribute("email", principal.getAttribute("email"));
+        model.addAttribute("picture", principal.getAttribute("picture"));
+        model.addAttribute("emailVerified", principal.getAttribute("email_verified"));
+        model.addAttribute("locale", principal.getAttribute("locale"));
+        model.addAttribute("sub", principal.getAttribute("sub"));
 
-        return "Welcome, " + name + "! Aapka login successful hai.";
+        return "dashboard";
     }
 }
+

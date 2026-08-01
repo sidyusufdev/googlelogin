@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Google Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-brands fa-google"></i>
+                </div>
+                <span class="brand-name">Google Auth</span>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Dashboard</h1>
+                    <p>Welcome back! Here's what's happening today.</p>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-menu">
+                        <div class="user-info">
+                            <span class="user-name" th:text="${name}">User</span>
+                            <span class="user-email" th:text="${email}">user@gmail.com</span>
+                        </div>
+                        <div class="avatar">
+                            <img th:src="${picture}" alt="Profile" />
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" th:text="${emailVerified ? 'Yes' : 'No'}">Yes</span>
+                        <span class="stat-label">Email Verified</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value">OAuth2</span>
+                        <span class="stat-label">Auth Provider</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" th:text="${locale}">en</span>
+                        <span class="stat-label">Locale</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value clock-value">--:--:-- --</span>
+                        <span class="stat-label">Current Time</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Card + Activity -->
+            <section class="content-grid">
+                <div class="card profile-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-id-badge"></i> Profile Overview</h2>
+                    </div>
+                    <div class="profile-body">
+                        <div class="profile-avatar">
+                            <img th:src="${picture}" alt="Profile Picture" />
+                            <span class="online-dot"></span>
+                        </div>
+                        <h3 class="profile-name" th:text="${name}">User Name</h3>
+                        <p class="profile-email" th:text="${email}">user@gmail.com</p>
+                        <div class="profile-badges">
+                            <span class="badge badge-google"><i class="fa-brands fa-google"></i> Google Account</span>
+                            <span class="badge badge-verified" th:if="${emailVerified}"><i class="fa-solid fa-circle-check"></i> Verified</span>
+                        </div>
+                        <div class="profile-details">
+                            <div class="detail-row">
+                                <span><i class="fa-solid fa-at"></i> Username</span>
+                                <strong th:text="${#strings.substringBefore(email, '@')}">user</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span><i class="fa-solid fa-globe"></i> Locale</span>
+                                <strong th:text="${locale}">en</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span><i class="fa-solid fa-user-tag"></i> ID</span>
+                                <strong class="truncate" th:text="${sub}">user-id</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card activity-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-bolt"></i> Quick Actions</h2>
+                    </div>
+                    <div class="activity-body">
+                        <div class="action-list">
+                            <button class="action-btn" onclick="showToast('Profile details updated from Google!')">
+                                <i class="fa-solid fa-user-pen"></i>
+                                <div>
+                                    <span>Edit Profile</span>
+                                    <small>View & update your info</small>
+                                </div>
+                            </button>
+                            <button class="action-btn" onclick="showToast('Recent activity loaded!')">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                                <div>
+                                    <span>Activity Log</span>
+                                    <small>Check your recent logins</small>
+                                </div>
+                            </button>
+                            <button class="action-btn" onclick="showToast('Settings opened (demo)')">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <div>
+                                    <span>Security</span>
+                                    <small>Manage account security</small>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Toast -->
+            <div class="toast" id="toast">
+                <i class="fa-solid fa-circle-check"></i>
+                <span id="toastMsg">Action performed!</span>
+            </div>
+        </main>
+    </div>
+
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>
+
