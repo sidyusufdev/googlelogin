@@ -1,38 +1,48 @@
-// Dashboard Interactivity
+// Dashboard Interactivity (optimized)
 
-// Sidebar toggle for mobile
+let toastTimer;
+let _toastEl = null;
+let _toastMsgEl = null;
+let _clockEl = null;
+
 document.addEventListener('DOMContentLoaded', function () {
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('sidebarToggle');
+    const sidebarNav = document.querySelector('.sidebar-nav');
 
-    if (toggleBtn) {
+    // cache frequently used elements
+    _toastEl = document.getElementById('toast');
+    _toastMsgEl = document.getElementById('toastMsg');
+    _clockEl = document.querySelector('.stat-value.clock-value');
+
+    if (toggleBtn && sidebar) {
         toggleBtn.addEventListener('click', function () {
             sidebar.classList.toggle('open');
         });
     }
 
-    // Active nav item
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
-        item.addEventListener('click', function (e) {
+    // Use event delegation for nav items (better for dynamic lists)
+    if (sidebarNav) {
+        sidebarNav.addEventListener('click', function (e) {
+            const item = e.target.closest('.nav-item');
+            if (!item) return;
             e.preventDefault();
-            navItems.forEach(i => i.classList.remove('active'));
-            this.classList.add('active');
+            // remove active from current
+            const active = sidebarNav.querySelector('.nav-item.active');
+            if (active && active !== item) active.classList.remove('active');
+            item.classList.add('active');
         });
-    });
+    }
 
-    // Update clock every second
+    // Update clock every second using cached element
     updateClock();
     setInterval(updateClock, 1000);
 });
 
-// Toast notification
-let toastTimer;
-
 function showToast(message) {
-    const toast = document.getElementById('toast');
-    const msg = document.getElementById('toastMsg');
-
+    // fallback to cached elements, otherwise query once
+    const toast = _toastEl || document.getElementById('toast');
+    const msg = _toastMsgEl || document.getElementById('toastMsg');
     if (!toast || !msg) return;
 
     msg.textContent = message;
@@ -44,9 +54,8 @@ function showToast(message) {
     }, 2500);
 }
 
-// Live clock in stat card
 function updateClock() {
-    const clockEl = document.querySelector('.stat-value.clock-value');
+    const clockEl = _clockEl || document.querySelector('.stat-value.clock-value');
     if (!clockEl) return;
 
     const now = new Date();

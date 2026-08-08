@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Google Login</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.min.css}">
+    <!-- Lazy-load Font Awesome to speed initial render -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    </noscript>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -70,6 +74,26 @@
                     </div>
                 </div>
             </header>
+
+            <!-- Welcome Hero Section -->
+            <section class="welcome-hero">
+                <div class="hero-avatar">
+                    <img th:src="${picture}" alt="Profile Picture" />
+                    <span class="hero-online-dot"></span>
+                </div>
+                <div class="hero-text">
+                    <h2>Welcome, <span class="hero-name" th:text="${name}">User</span>! 👋</h2>
+                    <p class="hero-email" th:text="${email}">user@gmail.com</p>
+                    <div class="hero-badges">
+                        <span class="hero-badge"><i class="fa-solid fa-circle-check"></i> Google Verified</span>
+                        <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Secured Session</span>
+                    </div>
+                </div>
+                <div class="hero-date">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span th:text="${#temporals.format(#temporals.createNow(), 'EEEE, dd MMMM yyyy')}">Today</span>
+                </div>
+            </section>
 
             <!-- Stats Cards -->
             <section class="stats-grid">
@@ -185,7 +209,7 @@
         </main>
     </div>
 
-    <script th:src="@{/js/dashboard.js}"></script>
+    <script th:src="@{/js/dashboard.min.js}" defer></script>
 </body>
 </html>
 
