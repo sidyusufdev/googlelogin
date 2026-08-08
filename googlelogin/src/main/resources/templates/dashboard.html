@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="app">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
@@ -22,8 +23,8 @@
                     <i class="fa-brands fa-google"></i>
                 </div>
                 <span class="brand-name">Google Auth</span>
-                <button class="sidebar-toggle" id="sidebarToggle">
-                    <i class="fa-solid fa-bars"></i>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
+                    <i class="fa-solid fa-bars" aria-hidden="true"></i>
                 </button>
             </div>
             <nav class="sidebar-nav">
@@ -55,7 +56,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="main">
+        <main id="main-content" class="main">
             <!-- Topbar -->
             <header class="topbar">
                 <div class="topbar-left">
@@ -69,7 +70,7 @@
                             <span class="user-email" th:text="${email}">user@gmail.com</span>
                         </div>
                         <div class="avatar">
-                            <img th:src="${picture}" alt="Profile" />
+                            <img th:src="${picture}" alt="Profile" loading="lazy" decoding="async"/>
                         </div>
                     </div>
                 </div>
@@ -78,7 +79,7 @@
             <!-- Welcome Hero Section -->
             <section class="welcome-hero">
                 <div class="hero-avatar">
-                    <img th:src="${picture}" alt="Profile Picture" />
+                    <img th:src="${picture}" alt="Profile Picture" loading="lazy" decoding="async" />
                     <span class="hero-online-dot"></span>
                 </div>
                 <div class="hero-text">
@@ -143,7 +144,7 @@
                     </div>
                     <div class="profile-body">
                         <div class="profile-avatar">
-                            <img th:src="${picture}" alt="Profile Picture" />
+                            <img th:src="${picture}" alt="Profile Picture" loading="lazy" decoding="async" />
                             <span class="online-dot"></span>
                         </div>
                         <h3 class="profile-name" th:text="${name}">User Name</h3>

@@ -16,8 +16,12 @@ document.addEventListener('DOMContentLoaded', function () {
     _clockEl = document.querySelector('.stat-value.clock-value');
 
     if (toggleBtn && sidebar) {
+        // Initialize aria state
+        toggleBtn.setAttribute('aria-expanded', 'false');
         toggleBtn.addEventListener('click', function () {
-            sidebar.classList.toggle('open');
+            const isOpen = sidebar.classList.toggle('open');
+            // reflect state for screen readers
+            toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         });
     }
 
